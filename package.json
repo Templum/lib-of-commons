@@ -1,0 +1,22 @@
+{
+  "name": "project-toolbox",
+  "version": "0.1.0",
+  "description": "An Utility Library made of Typescript Decorators which solve common issue like logging & validation.",
+  "main": "lib.ts",
+  "scripts": {
+    "build":"tsc",
+    "check:linter":"tslint -p .",
+    "check:security":"npm audit",
+    "fix:linter":"tslint -p . --fix",
+    "fix:security":"npm audit fix --only=prod",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Simon Pelczer <templum.dev@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    
+  }
+}
