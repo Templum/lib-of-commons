@@ -1,4 +1,4 @@
-import { Cache } from "../../lib";
+import { Cache, CacheKey } from "../../lib";
 
 async function wait(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -50,4 +50,74 @@ test('it should cache the result for the defined timespan', async () => {
     expect(firstCall).toEqual(secondCall);
     expect(firstCall).not.toEqual(thirdCall);
     expect(spy).toBeCalledTimes(2);
+});
+
+test('it should be able to handle null and undefined as keys', () => {
+    class Example {
+        private counter: number = 0;
+        @Cache()
+        method(@CacheKey important?: any) {
+            return this.counter++;
+        }
+    }
+    const instance = new Example();
+
+    expect(() => instance.method()).not.toThrow();
+    expect(() => instance.method(undefined)).not.toThrow();
+    expect(() => instance.method(null)).not.toThrow();
+});
+
+test('it should also cache the values of functions with no parameters', () => {
+
+    class Example {
+        private counter: number = 0;
+        @Cache()
+        increase() {
+            return this.counter++;
+        }
+    }
+    const instance = new Example();
+
+    const firstCall = instance.increase();
+    const secondCall = instance.increase();
+    const thirdCall = instance.increase();
+
+    expect(firstCall).toEqual(secondCall);
+    expect(secondCall).toEqual(thirdCall);
+});
+
+test('it should treat null & undefined as keys different during caching', () => {
+    class Example {
+        @Cache()
+        static method(@CacheKey important?: any) {
+            return Date.now() + Math.floor((Math.random() * 50));
+        }
+    }
+
+    const callWithNull = Example.method(null);
+    const callWithUndefined = Example.method(undefined);
+    const callWithImplicitUndefined = Example.method();
+
+    expect(callWithUndefined).toEqual(callWithImplicitUndefined);
+    expect(callWithNull).not.toEqual(callWithUndefined);
+    expect(callWithNull).not.toEqual(callWithImplicitUndefined);
+});
+
+test('it should cache based on the specified parameters', () => {
+    class Example {
+        private counter: number = 0;
+        @Cache()
+        method(@CacheKey important: string, timestamp: number, isAdmin: boolean) {
+            return this.counter++;
+        }
+    }
+    const instance = new Example();
+    const firstCall = instance.method('firstKey', Date.now(), false);
+    const secondCall = instance.method('secondKey', Date.now(), true);
+    const thirdCall = instance.method('firstKey', Date.now(), true);
+    const fourthCall = instance.method('secondKey', Date.now(), false);
+
+    expect(firstCall).toEqual(thirdCall);
+    expect(secondCall).toEqual(fourthCall);
+    expect(firstCall).not.toEqual(secondCall);
 });
