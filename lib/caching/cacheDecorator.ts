@@ -38,7 +38,7 @@ export function Cache(cacheDuration: number = ONE_MINUTE, cache: ICache<any> = n
                 hashKey = hashCode(key);
             }
 
-            if (cache.isCached(hashCode(hashKey))) {
+            if (cache.isCached(hashKey)) {
                 return cache.get(hashKey);
             }
 
