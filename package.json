@@ -4,19 +4,20 @@
   "description": "An Utility Library made of Typescript Decorators which solve common issue like logging & validation.",
   "main": "lib.ts",
   "scripts": {
-    "build":"tsc",
-    "check:linter":"tslint -p .",
-    "check:security":"npm audit",
-    "fix:linter":"tslint -p . --fix",
-    "fix:security":"npm audit fix --only=prod",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "check:linter": "tslint -p .",
+    "check:security": "npm audit",
+    "fix:linter": "tslint -p . --fix",
+    "fix:security": "npm audit fix --only=prod",
+    "test": "jest --coverage"
   },
   "author": "Simon Pelczer <templum.dev@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "devDependencies": {
-    
+    "@types/jest": "^24.0.11",
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.4.2"
   }
 }
