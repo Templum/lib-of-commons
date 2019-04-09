@@ -20,10 +20,6 @@ export function Cache(cacheDuration: number = ONE_MINUTE, cache: ICache<any> = n
         propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
 
         const method = propertyDesciptor.value;
-        if (typeof method !== 'function') {
-            throw new Error('Cache Decorator can only be used with functions');
-        }
-
         propertyDesciptor.value = function (...args: any[]) {
             const META_DATA_KEY = `${META_DATA_KEY_PREFIX}_${propertyName}`;
             const keyIndexes: number[] = target[META_DATA_KEY] || [];
