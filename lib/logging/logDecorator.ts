@@ -1,4 +1,4 @@
-import { ISanitizeInfo, META_DATA_KEY_PREFIX } from "./sanitizeParamDecorator";
+import { ISanitizeInfo, META_DATA_KEY_PREFIX } from "./hideParamDecorator";
 
 export enum Level {
     Debug,
@@ -26,33 +26,32 @@ export function Log(level: Level = Level.Info, logger: IToolboxLogger = console)
      * @param propertyName The name of the function
      * @param propertyDesciptor
      */
-    return function(
+    return function (
         target: any,
         propertyName: string,
         propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
 
         const method = propertyDesciptor.value;
-
-        propertyDesciptor.value = function(...args: any[]) {
+        propertyDesciptor.value = function (...args: any[]) {
             const META_DATA_KEY = `${META_DATA_KEY_PREFIX}_${propertyName}`;
             const paramsToSanitize = target[META_DATA_KEY] || [];
- 
-            const params = args.map((a, i) => getArgument(a,i, paramsToSanitize)).join();
+
+            const params = args.map((a, i) => getArgument(a, i, paramsToSanitize)).join();
 
             // display in console the function call details
             switch (level) {
                 case Level.Debug:
-                logger.debug(`Call: ${propertyName}(${params})`);
-                break;
+                    logger.debug(`Call: ${propertyName}(${params})`);
+                    break;
                 case Level.Info:
-                logger.info(`Call: ${propertyName}(${params})`);
-                break;
+                    logger.info(`Call: ${propertyName}(${params})`);
+                    break;
                 case Level.Warn:
-                logger.warn(`Call: ${propertyName}(${params})`);
-                break;
+                    logger.warn(`Call: ${propertyName}(${params})`);
+                    break;
                 case Level.Error:
-                logger.error(`Call: ${propertyName}(${params})`);
-                break;
+                    logger.error(`Call: ${propertyName}(${params})`);
+                    break;
             }
 
             // Perform the actuall invocation
@@ -60,14 +59,18 @@ export function Log(level: Level = Level.Info, logger: IToolboxLogger = console)
         };
         return propertyDesciptor;
     };
-
 }
 
 function getArgument(arg: any, index: number, paramsToSanitize: ISanitizeInfo[]): string {
     for (const info of paramsToSanitize) {
-        if (info.index === index){
+        if (info.index === index) {
             return info.value;
         }
+    }
+
+    // JSON.stringify(Infinity) => null
+    if (typeof arg === 'number' && !Number.isFinite(arg)) {
+        arg = arg.toString();
     }
 
     return JSON.stringify(arg);
