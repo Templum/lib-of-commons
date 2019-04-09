@@ -7,10 +7,16 @@
     "rules": {
         "prefer-const": true,
         "prefer-conditional-expression": true,
-        "semicolon":true,
-        "ordered-imports":true,
+        "semicolon": true,
+        "ordered-imports": true,
         "quotemark": false,
-        "only-arrow-functions":false,
+        "only-arrow-functions": false,
+        "space-before-function-paren": false
     },
-    "rulesDirectory": []
+    "rulesDirectory": [],
+    "linterOptions": {
+        "exclude": [
+            "**/__tests__/**"
+        ]
+    }
 }
