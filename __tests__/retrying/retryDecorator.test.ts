@@ -105,27 +105,23 @@ describe('Retry Decorator', () => {
 
     describe('Special Cases', () => {
         it('should not allow 0 as parameter for times', () => {
-            class Example {
-                public spy: () => boolean;
+            try {
+                class Example {
+                    public spy: () => boolean;
 
-                constructor() {
-                    const mock = jest
-                        .fn()
-                        .mockImplementationOnce(() => { throw new Error('Expected') })
-                        .mockImplementationOnce(() => true);
-                    this.spy = mock;
-                }
+                    constructor() {
+                        const mock = jest.fn(() => true)
+                        this.spy = mock;
+                    }
 
-                @Retry(isRetrieableError, 0)
-                network() {
-                    return this.spy()
+                    @Retry(isRetrieableError, 0)
+                    network() {
+                        return this.spy()
+                    }
                 }
+            } catch (error) {
+                expect(error.message).toEqual('Times need to be at least 1')
             }
-
-            const instance = new Example();
-
-            expect(instance.network).toThrowError();
-            expect(instance.spy).toBeCalledTimes(0);
         });
     });
 });

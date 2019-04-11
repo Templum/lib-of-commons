@@ -1,4 +1,5 @@
 export function AsyncRetry(isRetrieable: (error: Error) => boolean, times: number = 3) {
+    if (times <= 0) { throw new Error('Times need to be at least 1'); }
     return function (
         target: any,
         propertyName: string,
@@ -19,6 +20,7 @@ export function AsyncRetry(isRetrieable: (error: Error) => boolean, times: numbe
 }
 
 export function Retry(isRetrieable: (error: Error) => boolean, times: number = 3) {
+    if (times <= 0) { throw new Error('Times need to be at least 1'); }
     return function (
         target: any,
         propertyName: string,
