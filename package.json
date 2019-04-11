@@ -1,7 +1,7 @@
 {
-  "name": "project-toolbox",
+  "name": "lib-of-common",
   "version": "0.1.0",
-  "description": "An Utility Library made of Typescript Decorators which solve common issue like logging & validation.",
+  "description": "A Utility Library for Typescript that offers a variety of Decorators. That solve common tasks, hence the name Lib of Commons, like logging or parameter validation and many more.",
   "main": "lib.ts",
   "scripts": {
     "build": "tsc",
@@ -18,6 +18,6 @@
     "@types/jest": "^24.0.11",
     "jest": "^24.7.1",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.4.2"
+    "typescript": "3.4.3"
   }
 }
