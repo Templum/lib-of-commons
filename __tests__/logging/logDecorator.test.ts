@@ -164,5 +164,15 @@ describe('Log Decorator', () => {
             expect(record.level).toEqual(Level.Warn);
             expect(record.message).toEqual('Call: fails()');
         });
-    });
-})
+
+        it('should fallback to console if no logger is provided', () => {
+            class Example {
+                @Log()
+                static staticMethod(param: any) { return param; }
+            }
+
+            Example.staticMethod('anything');
+
+        });
+    })
+});
