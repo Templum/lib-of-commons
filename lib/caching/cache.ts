@@ -1,4 +1,4 @@
-interface ICacheEntry<V> {
+export interface ICacheEntry<V> {
     validTill: number;
     value: V;
 }
