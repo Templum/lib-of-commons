@@ -14,9 +14,11 @@ function prepareEmitMeasurement(
     targetUnit: TimeUnit,
     key: string,
     announcer: IAnnouncerInternal): (startTime: [number, number]) => void {
+    const transformToTargetUnit = transformTo(targetUnit);
+
     return function (startTime: [number, number]): void {
         const executionTime = process.hrtime(startTime);
-        const timeInTargetUnit = transformTo(targetUnit, executionTime);
+        const timeInTargetUnit = transformToTargetUnit(executionTime);
         announcer.announce({
             data: timeInTargetUnit,
             key,
