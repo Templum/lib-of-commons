@@ -1,8 +1,8 @@
 import { TimeUnit } from "../analytics/measure";
 
 const NS_PER_SEC = 1e9;
-const NS_PER_MS = 1e-6;
-const NS_PER_MIN = 1.66667e-11;
+const NS_PER_MS = 1e6;
+const NS_PER_MIN = 6e+10;
 
 function getMultiplikator(unit: TimeUnit): number {
     switch (unit) {
@@ -17,7 +17,10 @@ function getMultiplikator(unit: TimeUnit): number {
     }
 }
 
-export function transformTo(unit: TimeUnit, [s, ns]: [number, number]): number {
-    const totalInNS = s * NS_PER_SEC + ns;
-    return Math.floor(totalInNS / getMultiplikator(unit));
+export function transformTo(unit: TimeUnit): ([s, ns]: [number, number]) => number {
+    const multiplikator = getMultiplikator(unit);
+    return function ([s, ns]: [number, number]) {
+        const totalInNS = s * NS_PER_SEC + ns;
+        return Math.floor(totalInNS / multiplikator);
+    };
 }
