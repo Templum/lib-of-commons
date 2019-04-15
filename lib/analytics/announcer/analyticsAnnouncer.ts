@@ -18,7 +18,7 @@ export enum AnnouncementType {
 
 export interface IMonitor<Data> {
     getIdentifier(): string;
-    handAnnouncement(announcement: Announcement<Data>): void;
+    handleAnnouncement(announcement: Announcement<Data>): void;
 }
 
 export interface IAnnouncer {
@@ -50,14 +50,14 @@ export class AnalyticsAnnouncer implements IAnnouncerInternal {
 
     public register(monitor: IMonitor<any>): void {
         this.subscribers.push(monitor);
-        this.eventBus.addListener(ANALYTICS, monitor.handAnnouncement);
+        this.eventBus.addListener(ANALYTICS, monitor.handleAnnouncement.bind(monitor));
         console.info(`Registered Monitor ${monitor.getIdentifier()}`);
     }
 
     public unregister(monitor: IMonitor<any>): void {
         const idx = this.subscribers.findIndex((current) => current.getIdentifier() === monitor.getIdentifier());
         this.subscribers.splice(idx, 1);
-        this.eventBus.removeListener(ANALYTICS, monitor.handAnnouncement);
+        this.eventBus.removeListener(ANALYTICS, monitor.handleAnnouncement);
 
         console.info(`Removed Monitor ${monitor.getIdentifier()}`);
     }
