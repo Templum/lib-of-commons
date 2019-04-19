@@ -1,4 +1,5 @@
-import { Announcement, IMonitor } from "../../lib";
+import { IMonitor } from "../../lib";
+import { Announcement } from "../../lib/analytics/announcer/announcement";
 
 
 export class MockMonitor implements IMonitor<any> {

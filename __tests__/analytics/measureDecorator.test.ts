@@ -1,4 +1,5 @@
-import { AnnouncementType, libOfCommons } from "../../lib";
+import { libOfCommons } from "../../lib";
+import { AnnouncementType } from "../../lib/analytics/announcer/announcement";
 import { Measure, TimeUnit } from "../../lib/analytics/measure";
 import { MockMonitor } from "../__mocks__/monitor.mock";
 
@@ -66,10 +67,26 @@ describe('Measure Decorator', () => {
                 static async compute(time: number): Promise<number> {
                     throw new Error('Expected');
                 }
+
+                @Measure(TimeUnit.Nanosecond)
+                static syncCompute(time: number): number {
+                    throw new Error('Expected');
+                }
             }
 
             try {
                 await Example.compute(2000);
+            } catch (error) {
+                expect(error).toBeDefined();
+                const announcement = mock.getRecord();
+                expect(announcement.key).toEqual('compute');
+                expect(announcement.kind).toEqual(AnnouncementType.Time);
+                expect(typeof announcement.timestamp).toBe('number');
+                expect(announcement.data).toBeGreaterThan(0);
+            }
+
+            try {
+                Example.syncCompute(2000);
             } catch (error) {
                 expect(error).toBeDefined();
                 const announcement = mock.getRecord();
