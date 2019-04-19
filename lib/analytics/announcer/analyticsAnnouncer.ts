@@ -1,36 +1,14 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from 'events';
+import { IMonitor } from '../IMonitor';
+import { Announcement } from './announcement';
+import { InternalAnnouncer } from './IAnnouncer';
 
 const ANALYTICS = Symbol('Analytics');
 
-// tslint:disable-next-line: interface-name
-export interface Announcement<Data> {
-    key: string;
-    kind: AnnouncementType;
-    data: Data;
-    timestamp: number;
-}
-
-export enum AnnouncementType {
-    Time = 'executionTime',
-    Metric = 'metric',
-    Event = 'event',
-}
-
-export interface IMonitor<Data> {
-    getIdentifier(): string;
-    handleAnnouncement(announcement: Announcement<Data>): void;
-}
-
-export interface IAnnouncer {
-    register(monitor: IMonitor<any>): void;
-    unregister(monitor: IMonitor<any>): void;
-}
-
-export interface IAnnouncerInternal extends IAnnouncer {
-    announce(data: Announcement<any>): void;
-}
-
-export class AnalyticsAnnouncer implements IAnnouncerInternal {
+/**
+ * An Announcer Implementation using a local [[EventEmitter]].
+ */
+export class AnalyticsAnnouncer implements InternalAnnouncer {
     private subscribers: Array<IMonitor<any>>;
     private eventBus: EventEmitter;
 
@@ -39,6 +17,12 @@ export class AnalyticsAnnouncer implements IAnnouncerInternal {
         this.eventBus = new EventEmitter();
     }
 
+    /**
+     * Will submit provided data to all registered [[IMonitor]].
+     * By emitting it on the local [[EventEmitter]] instance. It
+     * will drop received [[Annoucement]] if there is no subscriber.
+     * @param data Information collected by a Domain Probe.
+     */
     public announce(data: Announcement<any>): void {
         if (this.eventBus.listenerCount(ANALYTICS) === 0) {
             console.info('No Monitor found, will drop data');
@@ -48,12 +32,22 @@ export class AnalyticsAnnouncer implements IAnnouncerInternal {
         this.eventBus.emit(ANALYTICS, data);
     }
 
+    /**
+     * Registers provided [[IMonitor]] as subscriber for [[Announcement]].
+     * It will print a warining if there are more then 10 registered Monitors.
+     * Due to it's implementation with an [[EventEmitter]].
+     * @param monitor that should be registered
+     */
     public register(monitor: IMonitor<any>): void {
         this.subscribers.push(monitor);
         this.eventBus.addListener(ANALYTICS, monitor.handleAnnouncement.bind(monitor));
         console.info(`Registered Monitor ${monitor.getIdentifier()}`);
     }
 
+    /**
+     * Unregisters provided [[IMonitor]] as subscriber for [[Announcement]].
+     * @param monitor that should be unregistered
+     */
     public unregister(monitor: IMonitor<any>): void {
         const idx = this.subscribers.findIndex((current) => current.getIdentifier() === monitor.getIdentifier());
         this.subscribers.splice(idx, 1);

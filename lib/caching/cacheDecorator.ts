@@ -1,18 +1,33 @@
-import { ICache, MemoryCache } from "./cache";
+import 'reflect-metadata';
+import { PREFIX } from '../shared/const';
+import { getMetaDataKey } from '../shared/helper';
+import { ICache } from './ICache';
+import { MemoryCache } from './memoryCache';
 
-const META_DATA_KEY_PREFIX = 'cache_key_for';
 const ONE_MINUTE = 60 * 1000;
+const getKey = getMetaDataKey(PREFIX.CacheKey);
 
+/**
+ * CacheKey Decorator allows to select certain parameters as cache keys.
+ * This improves the caching quality and also the performance.
+ */
 export function CacheKey(target: any, propertyName: string, index: number) {
-    const META_DATA_KEY = `${META_DATA_KEY_PREFIX}_${propertyName}`;
-    // Generate a List to hold all parameter that are relevant for they hashing
-    if (!Array.isArray(target[META_DATA_KEY])) {
-        target[META_DATA_KEY] = [];
-    }
+    const META_DATA_KEY = getKey(propertyName);
+    const listOfCacheKeys: number[] = Reflect.getOwnMetadata(META_DATA_KEY, target, propertyName) || [];
 
-    target[META_DATA_KEY].push(index);
+    listOfCacheKeys.push(index);
+
+    Reflect.defineMetadata(META_DATA_KEY, listOfCacheKeys, target, propertyName);
 }
 
+/**
+ * Cache Decorator which stores the method result in the provided [[ICache]] for the specified Time.
+ * It leverages either all input parameters or only the with [[CacheKey]] specified parameters as cache keys.
+ * By calculating an simple hashcode. It is adviced to avoid objects as cache keys. Because they might have
+ * an negative impact on the performance and further could lead to unwanted caching behaviours.
+ * @param cacheDuration in Milliseconds, defaults to 1 Minute
+ * @param cache to use, defaults to [[MemoryCache]]
+ */
 export function Cache(cacheDuration: number = ONE_MINUTE, cache: ICache<any> = new MemoryCache()) {
     return function (
         target: any,
@@ -21,12 +36,12 @@ export function Cache(cacheDuration: number = ONE_MINUTE, cache: ICache<any> = n
 
         const method = propertyDesciptor.value;
         propertyDesciptor.value = function (...args: any[]) {
-            const META_DATA_KEY = `${META_DATA_KEY_PREFIX}_${propertyName}`;
-            const keyIndexes: number[] = target[META_DATA_KEY] || [];
+            const META_DATA_KEY = getKey(propertyName);
+            const listOfCacheKeys: number[] = Reflect.getOwnMetadata(META_DATA_KEY, target, propertyName) || [];
 
             let hashKey = '';
-            if (keyIndexes.length > 0) {
-                const key = args.filter((_, i) => keyIndexes.includes(i))
+            if (listOfCacheKeys.length > 0) {
+                const key = args.filter((_, i) => listOfCacheKeys.includes(i))
                     .map((a) => JSON.stringify(a)).join();
                 hashKey = hashCode(key);
             } else {

@@ -1,16 +1,21 @@
-import { AnalyticsAnnouncer, IAnnouncer } from "./analytics/announcer/analyticsAnnouncer";
+import { AnalyticsAnnouncer } from './analytics/announcer/analyticsAnnouncer';
+import { IAnnouncer, InternalAnnouncer } from './analytics/announcer/IAnnouncer';
 
 // tslint:disable-next-line: max-line-length
-export { Announcement, AnnouncementType, IAnnouncer, IAnnouncerInternal, IMonitor } from "./analytics/announcer/analyticsAnnouncer";
-export { Measure, TimeUnit } from "./analytics/measure";
-export { ICache, ICacheEntry } from "./caching/cache";
-export { Cache, CacheKey } from "./caching/cacheDecorator";
-export { Hide } from "./logging/hideParamDecorator";
-export { IToolboxLogger, Level, Log } from "./logging/logDecorator";
-export { AsyncRetry, Retry } from "./retrying/retryDecorator";
+export { AnalyticsAnnouncer } from './analytics/announcer/analyticsAnnouncer';
+export { Announcement, AnnouncementType } from './analytics/announcer/announcement';
+export { IMonitor } from './analytics/IMonitor';
+export { Measure, TimeUnit } from './analytics/measure';
+export { Cache, CacheKey } from './caching/cacheDecorator';
+export { ICache, ICacheEntry } from './caching/ICache';
+export { Hide } from './logging/hideParamDecorator';
+export { IToolboxLogger } from './logging/IToolboxLogger';
+export { Level, Log } from './logging/logDecorator';
+export { Debounce } from './retrying/debounceDecorator';
+export { AsyncRetry, Retry } from './retrying/retryDecorator';
 
 class LibOfCommons {
-    private announcerInstance: IAnnouncer | undefined;
+    private announcerInstance: InternalAnnouncer | undefined;
 
     public getAnnouncerInstance(): IAnnouncer {
         if (!this.announcerInstance) {

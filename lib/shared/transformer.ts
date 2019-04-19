@@ -1,4 +1,4 @@
-import { TimeUnit } from "../analytics/measure";
+import { TimeUnit } from '../analytics/measure';
 
 const NS_PER_SEC = 1e9;
 const NS_PER_MS = 1e6;

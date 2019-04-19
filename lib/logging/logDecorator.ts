@@ -1,4 +1,7 @@
-import { ISanitizeInfo, META_DATA_KEY_PREFIX } from "./hideParamDecorator";
+import { PREFIX } from '../shared/const';
+import { getMetaDataKey } from '../shared/helper';
+import { ISanitizeInfo } from './hideParamDecorator';
+import { IToolboxLogger } from './IToolboxLogger';
 
 export enum Level {
     Debug,
@@ -7,25 +10,13 @@ export enum Level {
     Error,
 }
 
-export interface IToolboxLogger {
-    debug(message?: any, ...optionalParams: any[]): void;
-    info(message?: any, ...optionalParams: any[]): void;
-    warn(message?: any, ...optionalParams: any[]): void;
-    error(message?: any, ...optionalParams: any[]): void;
-}
-
 /**
  *
  * @param level The Log Level
  * @param logger Used Logger, will default to console
  */
 export function Log(level: Level = Level.Info, logger: IToolboxLogger = console) {
-    /**
-     *
-     * @param _
-     * @param propertyName The name of the function
-     * @param propertyDesciptor
-     */
+    const getKey = getMetaDataKey(PREFIX.Hide);
     return function (
         target: any,
         propertyName: string,
@@ -33,10 +24,23 @@ export function Log(level: Level = Level.Info, logger: IToolboxLogger = console)
 
         const method = propertyDesciptor.value;
         propertyDesciptor.value = function (...args: any[]) {
-            const META_DATA_KEY = `${META_DATA_KEY_PREFIX}_${propertyName}`;
-            const paramsToSanitize = target[META_DATA_KEY] || [];
+            const META_DATA_KEY = getKey(propertyName);
+            const listOfParameterToHide: ISanitizeInfo[] = Reflect.getOwnMetadata(META_DATA_KEY, target, propertyName) || [];
 
-            const params = args.map((a, i) => getArgument(a, i, paramsToSanitize)).join();
+            const params = args.map((a, i) => {
+                for (const info of listOfParameterToHide) {
+                    if (info.index === i) {
+                        return info.value;
+                    }
+                }
+
+                // JSON.stringify(Infinity) => null
+                if (typeof a === 'number' && !Number.isFinite(a)) {
+                    a = a.toString();
+                }
+
+                return JSON.stringify(a);
+            }).join();
 
             // display in console the function call details
             switch (level) {
@@ -59,19 +63,4 @@ export function Log(level: Level = Level.Info, logger: IToolboxLogger = console)
         };
         return propertyDesciptor;
     };
-}
-
-function getArgument(arg: any, index: number, paramsToSanitize: ISanitizeInfo[]): string {
-    for (const info of paramsToSanitize) {
-        if (info.index === index) {
-            return info.value;
-        }
-    }
-
-    // JSON.stringify(Infinity) => null
-    if (typeof arg === 'number' && !Number.isFinite(arg)) {
-        arg = arg.toString();
-    }
-
-    return JSON.stringify(arg);
 }

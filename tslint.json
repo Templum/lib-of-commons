@@ -9,14 +9,18 @@
         "prefer-conditional-expression": true,
         "semicolon": true,
         "ordered-imports": true,
-        "quotemark": false,
+        "quotemark": [
+            true,
+            "single"
+        ],
         "only-arrow-functions": false,
         "space-before-function-paren": false,
         "no-console": false,
         "max-line-length": [
             true,
             130
-        ]
+        ],
+        "interface-name": false
     },
     "rulesDirectory": [],
     "linterOptions": {

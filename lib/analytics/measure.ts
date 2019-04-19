@@ -1,8 +1,18 @@
-import { libOfCommons } from "..";
-import { isPromise } from "../shared/helper";
-import { transformTo } from "../shared/transformer";
-import { AnnouncementType, IAnnouncerInternal } from "./announcer/analyticsAnnouncer";
+import { libOfCommons } from '..';
+import { isPromise } from '../shared/helper';
+import { transformTo } from '../shared/transformer';
+import { AnnouncementType } from './announcer/announcement';
+import { InternalAnnouncer } from './announcer/IAnnouncer';
 
+/**
+ * The set of currently supported Time Units.
+ * Used by the [[Measure]] Decorator.
+ *
+ * - Nanosecond
+ * - Millisecond
+ * - Second
+ * - Minute
+ */
 export enum TimeUnit {
     Nanosecond,
     Millisecond,
@@ -10,13 +20,10 @@ export enum TimeUnit {
     Minute,
 }
 
-function prepareEmitMeasurement(
-    targetUnit: TimeUnit,
-    key: string,
-    announcer: IAnnouncerInternal): (startTime: [number, number]) => void {
+function prepareEmitMeasurement({ targetUnit, key }: { targetUnit: TimeUnit, key: string }) {
     const transformToTargetUnit = transformTo(targetUnit);
-
-    return function (startTime: [number, number]): void {
+    const announcer = libOfCommons.getAnnouncerInstance() as InternalAnnouncer;
+    return (startTime: [number, number]) => {
         const executionTime = process.hrtime(startTime);
         const timeInTargetUnit = transformToTargetUnit(executionTime);
         announcer.announce({
@@ -42,15 +49,21 @@ async function handlePromise(
     }
 }
 
+/**
+ * Measure Decorator which leverages [[process.hrtime()]] to measure the execution time of decorated methods.
+ * Using a [[Monitor]] the measurements can be obtained and processed.
+ * @param unit The [[TimeUnit]] used for the execution time measurement.
+ * @param metricKey The Name used for the [[Announcement]]. Will default to the method name.
+ */
 export function Measure(unit: TimeUnit, metricKey?: string) {
     return function (
-        target: any,
+        _: any,
         propertyName: string,
         propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
 
         const method = propertyDesciptor.value;
         const key = metricKey || propertyName;
-        const emitMeasurement = prepareEmitMeasurement(unit, key, libOfCommons.getAnnouncerInstance() as IAnnouncerInternal);
+        const emitMeasurement = prepareEmitMeasurement({ key, targetUnit: unit });
 
         propertyDesciptor.value = function (...args: any[]) {
             const startTime = process.hrtime();

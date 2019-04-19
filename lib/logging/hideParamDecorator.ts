@@ -1,19 +1,29 @@
-export const META_DATA_KEY_PREFIX = 'list_of_parameter_to_sanitize_for';
+import 'reflect-metadata';
+import { PREFIX } from '../shared/const';
+import { getMetaDataKey } from '../shared/helper';
 
+/**
+ * Information about the prameter that should be hidden.
+ */
 export interface ISanitizeInfo {
+    /**
+     * Index of the parameter in the args array.
+     */
     index: number;
+    /**
+     * Value with which it should be displayed.
+     */
     value: string;
 }
 
 export function Hide(value: string = '*****') {
-
+    const getKey = getMetaDataKey(PREFIX.Hide);
     return (target: any, propertyName: string, index: number) => {
-        const META_DATA_KEY = `${META_DATA_KEY_PREFIX}_${propertyName}`;
-        // Generate a List to hold all parameter to sanitize
-        if (!Array.isArray(target[META_DATA_KEY])) {
-            target[META_DATA_KEY] = [];
-        }
+        const META_DATA_KEY = getKey(propertyName);
+        const listOfParameterToHide: ISanitizeInfo[] = Reflect.getOwnMetadata(META_DATA_KEY, target, propertyName) || [];
 
-        target[META_DATA_KEY].push({ index, value } as ISanitizeInfo);
+        listOfParameterToHide.push({ index, value });
+
+        Reflect.defineMetadata(META_DATA_KEY, listOfParameterToHide, target, propertyName);
     };
 }
