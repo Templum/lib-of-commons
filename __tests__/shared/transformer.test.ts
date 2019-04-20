@@ -1,7 +1,7 @@
 import { TimeUnit } from "../../lib";
 import { transformTo } from "../../lib/shared/transformer";
 
-describe.only('transformTo', () => {
+describe('transformTo', () => {
     describe('Nanoseconds => Nanoseconds', () => {
         test('1 Nanoseconds should be 1 Nanoseconds', () => {
             const transFromToNanoseconds = transformTo(TimeUnit.Nanosecond);

@@ -115,7 +115,7 @@ describe('Cache Decorator', () => {
             class Example {
                 @Cache()
                 static method(@CacheKey important?: any) {
-                    return Date.now() + Math.floor((Math.random() * 50));
+                    return Math.floor((Math.random() * 100));
                 }
             }
 
