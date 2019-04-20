@@ -13,6 +13,11 @@ export { IToolboxLogger } from './logging/IToolboxLogger';
 export { Level, Log } from './logging/logDecorator';
 export { Debounce } from './retrying/debounceDecorator';
 export { AsyncRetry, Retry } from './retrying/retryDecorator';
+export { isGreaterThen } from './validation/isGreaterThen';
+export { isInteger } from './validation/isInteger';
+export { isOneOf } from './validation/isOneOf';
+export { isSmallerThen } from './validation/isSmallerThen';
+export { Validate } from './validation/validate';
 
 class LibOfCommons {
     private announcerInstance: InternalAnnouncer | undefined;
