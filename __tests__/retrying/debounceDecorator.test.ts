@@ -13,7 +13,7 @@ describe('Debounce Decorator', () => {
                     this.spy = mock;
                 }
 
-                @Debounce(5)
+                @Debounce(4)
                 invoke(): void {
                     return this.spy();
                 }
@@ -26,7 +26,7 @@ describe('Debounce Decorator', () => {
             instance.invoke();
             instance.invoke();
 
-            await new Promise(resolve => setTimeout(resolve, 5));
+            await new Promise(resolve => setTimeout(resolve, 8));
 
             instance.invoke();
             instance.invoke();
