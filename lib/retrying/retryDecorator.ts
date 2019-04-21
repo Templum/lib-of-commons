@@ -1,3 +1,9 @@
+/**
+ * Async Retry Decorator will automatically retry the invocation up to the specified amount of retries.
+ * It is setup to work with methods that return Promises or leverage the async keyword.
+ * @param isRetrieable function to determine if the received error is retriable
+ * @param times amount of retries, defaults to 3
+ */
 export function AsyncRetry(isRetrieable: (error: Error) => boolean, times: number = 3) {
     if (times <= 0) { throw new Error('Times need to be at least 1'); }
     return function (
@@ -19,6 +25,12 @@ export function AsyncRetry(isRetrieable: (error: Error) => boolean, times: numbe
     };
 }
 
+/**
+ * Retry Decorator will automatically retry the invocation up to the specified amount of retries.
+ * It is setup to work with methods that are executed synchronous.
+ * @param isRetrieable function to determine if the received error is retriable
+ * @param times amount of retries, defaults to 3
+ */
 export function Retry(isRetrieable: (error: Error) => boolean, times: number = 3) {
     if (times <= 0) { throw new Error('Times need to be at least 1'); }
     return function (

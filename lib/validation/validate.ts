@@ -2,6 +2,15 @@ import { PREFIX } from '../shared/const';
 import { getMetaDataKey } from '../shared/helper';
 import { IValidation } from './IValidation';
 
+/**
+ * Validate Decorator is used together with other Validation Decorators
+ * and will check the provided input parameters.
+ * Supported Decorator:
+ * - [[isGreater]]
+ * - [[isSmaller]]
+ * - [[isOneOf]]
+ * - [[isInteger]]
+ */
 export function Validate() {
     const getKey = getMetaDataKey(PREFIX.Validation);
     return function (

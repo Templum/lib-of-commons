@@ -3,6 +3,11 @@ import { PREFIX } from '../shared/const';
 import { getMetaDataKey } from '../shared/helper';
 import { IValidation } from './IValidation';
 
+/**
+ * IsGreater Decorator will check if the marked parameter is greater then the provided value.
+ * It will throw an error if the value is smaller or equal.
+ * @param value target value
+ */
 export function isGreater(value: number) {
     const getKey = getMetaDataKey(PREFIX.Validation);
     return (target: any, propertyName: string, index: number) => {

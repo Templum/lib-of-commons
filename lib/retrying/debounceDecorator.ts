@@ -1,3 +1,8 @@
+/**
+ * Debounce Decorator will drop additional calls during the specified debounce period.
+ * After the debounce period has passed, it will forward the call again.
+ * @param time window for the debouncing in ms
+ */
 export function Debounce(time: number) {
     let nextCall = 0;
     return function (

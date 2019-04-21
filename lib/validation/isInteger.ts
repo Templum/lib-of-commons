@@ -3,6 +3,10 @@ import { PREFIX } from '../shared/const';
 import { getMetaDataKey } from '../shared/helper';
 import { IValidation } from './IValidation';
 
+/**
+ * It will check if the marked parameter is an Integer. It leverages
+ * the Number.isInteger method to perform the validation.
+ */
 export function isInteger() {
     const getKey = getMetaDataKey(PREFIX.Validation);
     return (target: any, propertyName: string, index: number) => {

@@ -3,6 +3,10 @@ import { PREFIX } from '../shared/const';
 import { getMetaDataKey } from '../shared/helper';
 import { IValidation } from './IValidation';
 
+/**
+ * IsOneOf checks if the marked parameter is included in the provided whitelist.
+ * @param whitelist containing allowed values
+ */
 export function isOneOf(whitelist: any[]) {
     const getKey = getMetaDataKey(PREFIX.Validation);
     return (target: any, propertyName: string, index: number) => {

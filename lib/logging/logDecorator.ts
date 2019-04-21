@@ -3,6 +3,13 @@ import { getMetaDataKey } from '../shared/helper';
 import { ISanitizeInfo } from './hideParamDecorator';
 import { IToolboxLogger } from './IToolboxLogger';
 
+/**
+ * Supported Log Levels
+ * - Debug
+ * - Info
+ * - Warn
+ * - Error
+ */
 export enum Level {
     Debug,
     Info,
@@ -11,9 +18,11 @@ export enum Level {
 }
 
 /**
- *
- * @param level The Log Level
- * @param logger Used Logger, will default to console
+ * Log Decorator which logs the method name along with the received parameters.
+ * Further it possible to leverage the [[Hide]] Decorator to sanitize specified
+ * Parameters during logging.
+ * @param level The Log Level of the message
+ * @param logger The used logger [[IToolboxLogger]], defaults to [[console]]
  */
 export function Log(level: Level = Level.Info, logger: IToolboxLogger = console) {
     const getKey = getMetaDataKey(PREFIX.Hide);

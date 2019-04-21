@@ -51,7 +51,7 @@ async function handlePromise(
 
 /**
  * Measure Decorator which leverages [[process.hrtime()]] to measure the execution time of decorated methods.
- * Using a [[Monitor]] the measurements can be obtained and processed.
+ * Using a [[IMonitor]] the measurements can be obtained and processed.
  * @param unit The [[TimeUnit]] used for the execution time measurement.
  * @param metricKey The Name used for the [[Announcement]]. Will default to the method name.
  */
