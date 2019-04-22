@@ -176,3 +176,37 @@ This library is a utility library for Typescript which provides functionality fo
     await instance.sleep(100); // => Execution Time 101334900 (~ 101,33 ms)
     await instance.sleep(100); // => Execution Time 101105000 (~ 101,10 ms)
 ```
+
+```typescript
+    //#### Following Code is required to obtain reported Metrics ####//
+
+    // Could also choose a less specialized type e.g. any
+    class MyMonitor implements IMonitor<number> {
+        getIdentifier(): string {
+            return 'MyMonitor';
+        }
+
+        handleAnnouncement(announcement: Announcement<number>): void {
+            if (announcement.key === 'User_Subscribed') {
+                console.info('Current Value', announcement.data);
+            }
+        }
+    }
+
+    // Register MyMonitor
+    const globalAnnouncer = libOfCommons.getAnnouncerInstance();
+    globalAnnouncer.register(new MyMonitor());
+
+    //#### Usage of the Measure Decorator ####//
+    class Example {
+        @Counter('User_Subscribed')
+        subscribed(email: string) {
+            // Do something
+            return true;
+        }
+    }
+
+    const instance = new Example();
+
+    instance.subscribed('user@sample.com'); // => Current Value 1
+```
