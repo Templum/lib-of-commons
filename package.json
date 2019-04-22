@@ -2,7 +2,7 @@
   "name": "lib-of-commons",
   "version": "0.1.2",
   "description": "A Utility Library for Typescript that offers a variety of Decorators. That solve common tasks, hence the name Lib of Commons, like logging or parameter validation and many more.",
-  "main": "lib.ts",
+  "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
     "check:linter": "tslint -p .",
@@ -12,8 +12,22 @@
     "test": "jest --coverage",
     "prepublishOnly": "npm run test && npm run build"
   },
-  "author": "Simon Pelczer <templum.dev@gmail.com>",
   "license": "MIT",
+  "repository": {
+    "type": "Github",
+    "url": "https://github.com/Templum/lib-of-commons"
+  },
+  "homepage": "https://github.com/Templum/lib-of-commons",
+  "bugs": {
+    "url": "https://github.com/Templum/lib-of-commons/issues/new?assignees=&labels=Bug&template=bug-report.md&title=%5BBUG%5D+-+Start+here+with+a+descriptive+Title"
+  },
+  "author": "Simon Pelczer <templum.dev@gmail.com>",
+  "contributors": [
+    {
+      "name": "Simon Pelczer",
+      "email": "templum.dev@gmail.com"
+    }
+  ],
   "dependencies": {
     "reflect-metadata": "0.1.13"
   },
