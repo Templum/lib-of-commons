@@ -5,7 +5,7 @@
   "main": "lib.ts",
   "scripts": {
     "build": "tsc",
-    "generate:docs": "typedoc --out docs ./lib/",
+    "generate:docs": "typedoc --theme markdown --mdEngine github --out docs ./lib/",
     "check:linter": "tslint -p .",
     "check:security": "npm audit --only=prod",
     "fix:linter": "tslint -p . --fix",
@@ -21,11 +21,14 @@
   "devDependencies": {
     "@types/jest": "^24.0.11",
     "@types/node": "10.0.3",
+    "typedoc": "0.14.2",
+    "typedoc-plugin-markdown": "1.2.0",
     "jest": "^24.7.1",
     "ts-jest": "^24.0.2",
     "typescript": "3.4.4"
   },
   "files": [
-    "/dist"
+    "/dist",
+    "README.md"
   ]
 }
