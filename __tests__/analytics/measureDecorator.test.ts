@@ -12,12 +12,12 @@ describe('Measure Decorator', () => {
 
             class Example {
 
-                @Measure(TimeUnit.Millisecond)
+                @Measure(TimeUnit.Nanosecond)
                 static compute(times: number): number {
                     for (let i = 0; i < times; i++) {
-                        const square = i * i;
+                        const temp = i * i;
                     }
-                    return 1;
+                    return 1337;
                 }
             }
 
@@ -27,7 +27,7 @@ describe('Measure Decorator', () => {
             expect(announcement.key).toEqual('compute');
             expect(announcement.kind).toEqual(AnnouncementType.Time);
             expect(typeof announcement.timestamp).toBe('number');
-            expect(announcement.data).toBeGreaterThan(1);
+            expect(announcement.data).toBeGreaterThanOrEqual(100000); // Assuming that each Loop takes a minimum of 1 ns
 
             announcer.unregister(mock);
         });
