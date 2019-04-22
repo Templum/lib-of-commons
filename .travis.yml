@@ -5,13 +5,8 @@ node_js:
   - "node" # Last
 
 before_script:
-  - npm install -g tslint
   - npm ci
 
 script:
   - npm run test
-  - npm run check:linter
   - npm run check:security
-
-after_script:
-  - ./bin/codecov -e TRAVIS_NODE_VERSION -f coverage/*.json
