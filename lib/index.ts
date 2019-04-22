@@ -4,6 +4,7 @@ import { IAnnouncer, InternalAnnouncer } from './analytics/announcer/IAnnouncer'
 // tslint:disable-next-line: max-line-length
 export { AnalyticsAnnouncer } from './analytics/announcer/analyticsAnnouncer';
 export { Announcement, AnnouncementType } from './analytics/announcer/announcement';
+export { Counter } from './analytics/counter';
 export { IMonitor } from './analytics/IMonitor';
 export { Measure, TimeUnit } from './analytics/measure';
 export { Cache, CacheKey } from './caching/cacheDecorator';
