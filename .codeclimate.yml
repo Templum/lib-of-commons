@@ -1,0 +1,10 @@
+plugins:
+  tslint:
+    enabled: true
+    config: tslint.json
+  markdownlint:
+    enabled: true
+    
+exclude_patterns:
+- "__tests__/"
+- "dist/"

@@ -1,0 +1,17 @@
+language: node_js
+
+node_js:
+  - "7.0.0" # Latest
+  - "6.9.1" # Current
+  - "4.6.1" # Last
+
+addons:
+    code_climate:
+        repo_token: 360e6a58aa1dfbefbdd18149c6217164e822d39d8577ce99dd6f89fe5da5b28d
+
+before_script:
+  - npm install -g codeclimate-test-reporter
+  - npm install
+script:
+  - npm test
+  - codeclimate-test-reporter < ./coverage/lcov.info
