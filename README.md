@@ -62,7 +62,8 @@ This library is a utility library for Typescript which provides functionality fo
 ```typescript
     class Example {
         @Validate()
-        div(@isInteger() a: number, @isInteger() @isGreater(0) b: number){      return a / b;
+        div(@isInteger() a: number, @isInteger() @isGreater(0) b: number){
+            return a / b;
         }
 
         @Validate()

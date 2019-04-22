@@ -12,7 +12,8 @@ assignees: ''
 ## General Information
 
 Version: <!--- Please provide the version of the lib in which you found the bug -->
-Environment: 
+Environment:
+
 - [ ] NodeJS (Version)
 - [ ] Browser (Browser + Version)
 
@@ -28,5 +29,6 @@ Environment:
 
 <!--- Please Provide an example usage that allows reproducing the error -->
 
-**Additional context**
-Add any other context about the problem here.
+### Additional context
+
+<!--- Please feel free to provide additional context e.g. The Lines that might be responsible, if you already investigated -->
