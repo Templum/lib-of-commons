@@ -1,6 +1,6 @@
 {
   "name": "lib-of-commons",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A Utility Library for Typescript that offers a variety of Decorators. That solve common tasks, hence the name Lib of Commons, like logging or parameter validation and many more.",
   "main": "./dist/index.js",
   "scripts": {
