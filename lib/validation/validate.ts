@@ -7,7 +7,9 @@ import { IValidation } from './IValidation';
  * and will check the provided input parameters.
  * Supported Decorator:
  * - [[isGreater]]
+ * - [[isGreaterOrEqual]]
  * - [[isSmaller]]
+ * - [[isSmallerOrEqual]]
  * - [[isOneOf]]
  * - [[isInteger]]
  */
@@ -24,8 +26,7 @@ export function Validate() {
             const listOfParameterToValidate: IValidation[] = Reflect.getOwnMetadata(META_DATA_KEY, target, propertyName) || [];
 
             listOfParameterToValidate.filter((current) => {
-                const isValid = current.validate(args[current.index]);
-                if (isValid) { return true; } else { throw new Error(current.message); }
+                return current.validate(args[current.index]);
             });
 
             // Perform the actuall invocation

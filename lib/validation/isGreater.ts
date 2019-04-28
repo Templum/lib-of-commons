@@ -14,9 +14,16 @@ export function isGreater(value: number) {
         const META_DATA_KEY = getKey(propertyName);
         const listOfValidations: IValidation[] = Reflect.getOwnMetadata(META_DATA_KEY, target, propertyName) || [];
 
-        const validator = (param: number) => param > value;
-        // tslint:disable-next-line: max-line-length
-        listOfValidations.push({ index, validate: validator, message: `${propertyName}: Parameter ${index} was not greater then ${value}` });
+        const validator = (param: number) => {
+            if (typeof param !== 'number') {
+                throw new Error(`${propertyName}: Parameter ${index} was not a number`);
+            } else if (param > value) {
+                return true;
+            } else {
+                throw new Error(`${propertyName}: Parameter ${index} was not greater then ${value}`);
+            }
+        };
+        listOfValidations.push({ index, validate: validator });
 
         Reflect.defineMetadata(META_DATA_KEY, listOfValidations, target, propertyName);
     };

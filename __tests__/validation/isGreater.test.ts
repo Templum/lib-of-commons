@@ -46,5 +46,38 @@ describe('isGreater', () => {
                 expect(error.message).toEqual(expect.stringContaining('was not greater then'));
             }
         });
+
+        it('should throw an error if the marked parameter is not a number', () => {
+            class Example {
+                @Validate()
+                static invoke(@isGreater(1337) input: any): number {
+                    return input;
+                }
+            }
+
+            try {
+                Example.invoke({});
+            } catch (error) {
+                expect(error.message).toEqual(expect.stringContaining('was not a number'));
+            }
+
+            try {
+                Example.invoke([]);
+            } catch (error) {
+                expect(error.message).toEqual(expect.stringContaining('was not a number'));
+            }
+
+            try {
+                Example.invoke(true);
+            } catch (error) {
+                expect(error.message).toEqual(expect.stringContaining('was not a number'));
+            }
+
+            try {
+                Example.invoke('123');
+            } catch (error) {
+                expect(error.message).toEqual(expect.stringContaining('was not a number'));
+            }
+        });
     });
 });

@@ -13,9 +13,14 @@ export function isInteger() {
         const META_DATA_KEY = getKey(propertyName);
         const listOfValidations: IValidation[] = Reflect.getOwnMetadata(META_DATA_KEY, target, propertyName) || [];
 
-        const validator = (param: number) => Number.isInteger(param);
-        // tslint:disable-next-line: max-line-length
-        listOfValidations.push({ index, validate: validator, message: `${propertyName}: Parameter ${index} was not an Integer` });
+        const validator = (param: number) => {
+            if (Number.isInteger(param)) {
+                return true;
+            } else {
+                throw new Error(`${propertyName}: Parameter ${index} was not an Integer`);
+            }
+        };
+        listOfValidations.push({ index, validate: validator });
 
         Reflect.defineMetadata(META_DATA_KEY, listOfValidations, target, propertyName);
     };
