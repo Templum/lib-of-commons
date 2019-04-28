@@ -15,9 +15,11 @@ export { Level, Log } from './logging/logDecorator';
 export { Debounce } from './retrying/debounceDecorator';
 export { AsyncRetry, Retry } from './retrying/retryDecorator';
 export { isGreater } from './validation/isGreater';
+export { IsGreaterOrEqual } from './validation/isGreaterOrEqual';
 export { isInteger } from './validation/isInteger';
 export { isOneOf } from './validation/isOneOf';
 export { isSmaller } from './validation/isSmaller';
+export { IsSmallerOrEqual } from './validation/isSmallerOrEqual';
 export { Validate } from './validation/validate';
 
 class LibOfCommons {
