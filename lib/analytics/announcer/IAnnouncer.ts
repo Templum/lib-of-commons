@@ -1,4 +1,4 @@
-import { IMonitor } from '../IMonitor';
+import { IMonitor } from '../monitor/IMonitor';
 import { Announcement } from './announcement';
 
 /**

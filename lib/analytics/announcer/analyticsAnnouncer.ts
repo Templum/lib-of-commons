@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { IMonitor } from '../IMonitor';
+import { IMonitor } from '../monitor/IMonitor';
 import { Announcement } from './announcement';
 import { InternalAnnouncer } from './IAnnouncer';
 

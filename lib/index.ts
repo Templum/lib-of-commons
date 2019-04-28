@@ -5,7 +5,7 @@ import { IAnnouncer, InternalAnnouncer } from './analytics/announcer/IAnnouncer'
 export { AnalyticsAnnouncer } from './analytics/announcer/analyticsAnnouncer';
 export { Announcement, AnnouncementType } from './analytics/announcer/announcement';
 export { Counter } from './analytics/counter';
-export { IMonitor } from './analytics/IMonitor';
+export { IMonitor } from './analytics/monitor/IMonitor';
 export { Measure, TimeUnit } from './analytics/measure';
 export { Cache, CacheKey } from './caching/cacheDecorator';
 export { ICache, ICacheEntry } from './caching/ICache';

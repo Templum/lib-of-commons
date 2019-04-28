@@ -1,4 +1,4 @@
-import { Announcement } from './announcer/announcement';
+import { Announcement } from '../announcer/announcement';
 
 /**
  * An Interface for Monitors that will receive Domain Data published as [[Announcement]] by an [[InternalAnnouncer]].
